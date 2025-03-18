@@ -1,0 +1,16 @@
+{
+  "name": "simple_task_manager",
+  "version": "1.0.0",
+  "author": "Milton Rodrigues",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "echo \"No tests defined\" && exit 1"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  }
+}
