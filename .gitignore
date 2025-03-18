@@ -1,3 +1,4 @@
+# Yarn dependencies and configurations
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
@@ -5,13 +6,10 @@
 !.yarn/sdks
 !.yarn/versions
 
-# Whether you use PnP or not, the node_modules folder is often used to store
-# build artifacts that should be gitignored
+# Node modules and build artifacts
 node_modules
+.next/cache
 
-# Swap the comments on the following lines if you wish to use zero-installs
-# In that case, don't forget to run `yarn config set enableGlobalCache false`!
-# Documentation here: https://yarnpkg.com/features/caching#zero-installs
-
+# Zero-installs configuration (uncomment if you use zero-installs)
 #!.yarn/cache
 .pnp.*
