@@ -7,6 +7,7 @@ import ItensListaTarefas from './itens-lista-tarefas';
 import Paginacao from './paginacao';
 import Ordenacao from './ordenacao';
 import { getCombinedTarefas } from '../api';
+
 interface Tarefa {
   id: number;
   nome: string;
@@ -89,54 +90,61 @@ const ListarTarefas: React.FC = () => {
   };
 
   return (
-    <div className="text-center">
-      <h3>Tarefas a fazer</h3>
-      <Table striped bordered hover responsive data-testid="tabela">
-        <thead>
-          <tr>
-            <th>
-              <a href="/" onClick={handleOrdenar}>
-                Tarefa &nbsp;
-                <Ordenacao ordenar={ordenar} />
-              </a>
-            </th>
-            <th>
-              <Link
-                to="/cadastrar"
-                className="btn btn-success btn-sm"
-                data-testid="btn-nova-tarefa"
-              >
-                <FontAwesomeIcon icon={faPlus} />
-                &nbsp; Nova tarefa
-              </Link>
-            </th>
-          </tr>
-          <tr>
-            <th>
-              <Form.Control
-                type="text"
-                value={filtroTarefa}
-                onChange={handleFiltrar}
-                data-testid="txt-tarefa"
-                className="filtro-tarefa"
-              />
-            </th>
-            <th>&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ItensListaTarefas
-            tarefas={tarefas}
-            recarregarTarefas={setCarregarTarefas}
-          />
-        </tbody>
-      </Table>
-      <Paginacao
-        totalItems={totalItems}
-        itemsPorPagina={ITENS_POR_PAG}
-        paginaAtual={paginaAtual}
-        mudarPagina={handleMudarPagina}
-      />
+    <div className="container py-5">
+      {/* Card Wrapper for Tasks */}
+      <div className="card shadow-sm border-0 rounded-lg p-4">
+        <div className="text-center mb-4">
+          <h3>Tarefas a fazer</h3>
+        </div>
+
+        <Table striped bordered hover responsive data-testid="tabela">
+          <thead>
+            <tr>
+              <th>
+                <a href="/" onClick={handleOrdenar}>
+                  Tarefa &nbsp;
+                  <Ordenacao ordenar={ordenar} />
+                </a>
+              </th>
+              <th>
+                <Link
+                  to="/cadastrar"
+                  className="btn btn-success btn-sm"
+                  data-testid="btn-nova-tarefa"
+                >
+                  <FontAwesomeIcon icon={faPlus} />
+                  &nbsp; Nova tarefa
+                </Link>
+              </th>
+            </tr>
+            <tr>
+              <th>
+                <Form.Control
+                  type="text"
+                  value={filtroTarefa}
+                  onChange={handleFiltrar}
+                  data-testid="txt-tarefa"
+                  className="filtro-tarefa"
+                />
+              </th>
+              <th>&nbsp;</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ItensListaTarefas
+              tarefas={tarefas}
+              recarregarTarefas={setCarregarTarefas}
+            />
+          </tbody>
+        </Table>
+
+        <Paginacao
+          totalItems={totalItems}
+          itemsPorPagina={ITENS_POR_PAG}
+          paginaAtual={paginaAtual}
+          mudarPagina={handleMudarPagina}
+        />
+      </div>
     </div>
   );
 };
