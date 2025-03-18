@@ -1,45 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect, FormEvent } from 'react';
 import { Button, Form, Container, Card, Modal } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 
-function AtualizarTarefa() {
-  const [exibirModal, setExibirModal] = useState(false);
-  const [formValidado, setFormValidado] = useState(false);
-  const [tarefa, setTarefa] = useState('');
+interface Tarefa {
+  id: number;
+  nome: string;
+}
+
+const AtualizarTarefa: React.FC = () => {
+  const [exibirModal, setExibirModal] = useState<boolean>(false);
+  const [formValidado, setFormValidado] = useState<boolean>(false);
+  const [tarefa, setTarefa] = useState<string>('');
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
 
   useEffect(() => {
-    const tarefasDb = localStorage.getItem('tarefas');
-    const tarefas = tarefasDb ? JSON.parse(tarefasDb) : [];
-    const tarefaEncontrada = tarefas.find((t) => t.id === parseInt(id, 10));
-    if (tarefaEncontrada) {
-      setTarefa(tarefaEncontrada.nome);
+    if (id) {
+      const tarefasDb = localStorage.getItem('tarefas');
+      const tarefas: Tarefa[] = tarefasDb ? JSON.parse(tarefasDb) : [];
+      const tarefaEncontrada = tarefas.find((t) => t.id === parseInt(id, 10));
+      if (tarefaEncontrada) {
+        setTarefa(tarefaEncontrada.nome);
+      }
     }
   }, [id]);
 
-  function handleFecharModal() {
+  const handleFecharModal = () => {
     navigate('/');
-  }
+  };
 
-  function atualizar(event) {
+  const atualizar = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormValidado(true);
+
     if (event.currentTarget.checkValidity()) {
       const tarefasDb = localStorage.getItem('tarefas');
-      let tarefas = tarefasDb ? JSON.parse(tarefasDb) : [];
+      let tarefas: Tarefa[] = tarefasDb ? JSON.parse(tarefasDb) : [];
 
-      tarefas = tarefas.map((tarefaObj) =>
-        tarefaObj.id === parseInt(id, 10)
-          ? { ...tarefaObj, nome: tarefa }
-          : tarefaObj
-      );
+      if (id) {
+        tarefas = tarefas.map((tarefaObj) =>
+          tarefaObj.id === parseInt(id, 10)
+            ? { ...tarefaObj, nome: tarefa }
+            : tarefaObj
+        );
 
-      localStorage.setItem('tarefas', JSON.stringify(tarefas));
-      setExibirModal(true);
+        localStorage.setItem('tarefas', JSON.stringify(tarefas));
+        setExibirModal(true);
+      }
     }
-  }
+  };
 
   return (
     <Container className="mt-4">
@@ -52,8 +61,8 @@ function AtualizarTarefa() {
               <Form.Control
                 type="text"
                 placeholder="Digite a tarefa"
-                minLength="5"
-                maxLength="100"
+                minLength={5}
+                maxLength={100}
                 required
                 data-testid="txt-tarefa"
                 value={tarefa}
@@ -92,6 +101,6 @@ function AtualizarTarefa() {
       </Modal>
     </Container>
   );
-}
+};
 
 export default AtualizarTarefa;

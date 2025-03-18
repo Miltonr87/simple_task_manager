@@ -1,27 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Button, Form, Container, Card, Modal } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import Tarefa from '../models/tarefa.model';
+import Tarefa from '../types/tarefa.model';
 
-function CadastrarTarefa() {
-  const [tarefa, setTarefa] = useState('');
-  const [formValidado, setFormValidado] = useState(false);
-  const [exibirModal, setExibirModal] = useState(false);
+const CadastrarTarefa: React.FC = () => {
+  const [tarefa, setTarefa] = useState<string>('');
+  const [formValidado, setFormValidado] = useState<boolean>(false);
+  const [exibirModal, setExibirModal] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  function cadastrar(event) {
+  function cadastrar(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setFormValidado(true);
-    if (event.currentTarget.checkValidity() === true) {
+
+    // Check form validity
+    if (event.currentTarget.checkValidity()) {
       const tarefasDb = localStorage.getItem('tarefas');
-      const tarefas = tarefasDb ? JSON.parse(tarefasDb) : [];
-      tarefas.push(new Tarefa(new Date().getTime(), tarefa, false));
+      const tarefas: Tarefa[] = tarefasDb ? JSON.parse(tarefasDb) : [];
+
+      // Create a new Tool and add it to the list
+      const novaTarefa = new Tarefa(new Date().getTime(), tarefa, false);
+      tarefas.push(novaTarefa);
+
+      // Save back to localStorage
       localStorage.setItem('tarefas', JSON.stringify(tarefas));
       setExibirModal(true);
     }
   }
 
-  function handleTxtTarefa(event) {
+  function handleTxtTarefa(event: React.ChangeEvent<HTMLInputElement>) {
     setTarefa(event.target.value);
   }
 
@@ -40,8 +47,8 @@ function CadastrarTarefa() {
               <Form.Control
                 type="text"
                 placeholder="Digite a tarefa"
-                minLength="5"
-                maxLength="100"
+                minLength={5}
+                maxLength={100}
                 required
                 value={tarefa}
                 onChange={handleTxtTarefa}
@@ -80,6 +87,6 @@ function CadastrarTarefa() {
       </Modal>
     </Container>
   );
-}
+};
 
 export default CadastrarTarefa;

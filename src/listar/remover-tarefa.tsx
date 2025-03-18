@@ -1,38 +1,51 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { Modal, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
-function RemoverTarefa(props) {
+interface Tarefa {
+  id: number;
+  nome: string;
+}
 
-  const [exibirModal, setExibirModal] = useState(false);
+interface RemoverTarefaProps {
+  tarefa: Tarefa;
+  recarregarTarefas: (recarregar: boolean) => void;
+}
 
-  function handleAbrirModal(event) {
+const RemoverTarefa: React.FC<RemoverTarefaProps> = ({
+  tarefa,
+  recarregarTarefas,
+}) => {
+  const [exibirModal, setExibirModal] = useState<boolean>(false);
+
+  const handleAbrirModal = (event: React.MouseEvent) => {
     event.preventDefault();
     setExibirModal(true);
-  }
+  };
 
-  function handleFecharModal() {
+  const handleFecharModal = () => {
     setExibirModal(false);
-  }
+  };
 
-  function handleRemoverTarefa(event) {
+  const handleRemoverTarefa = (event: React.MouseEvent) => {
     event.preventDefault();
-    const tarefasDb = localStorage['tarefas'];
+    const tarefasDb = localStorage.getItem('tarefas');
     let tarefas = tarefasDb ? JSON.parse(tarefasDb) : [];
-    tarefas = tarefas.filter(tarefa => tarefa.id !== props.tarefa.id);
-    localStorage['tarefas'] = JSON.stringify(tarefas);
+    tarefas = tarefas.filter((tarefaDb: Tarefa) => tarefaDb.id !== tarefa.id);
+    localStorage.setItem('tarefas', JSON.stringify(tarefas));
     setExibirModal(false);
-    props.recarregarTarefas(true);
-  }
+    recarregarTarefas(true);
+  };
 
   return (
     <span>
-      <Button variant="danger"
+      <Button
+        variant="danger"
         className="btn-sm"
         onClick={handleAbrirModal}
-        data-testid="btn-abrir-modal">
+        data-testid="btn-abrir-modal"
+      >
         <FontAwesomeIcon icon={faTrashAlt} />
       </Button>
       <Modal show={exibirModal} onHide={handleFecharModal} data-testid="modal">
@@ -42,12 +55,14 @@ function RemoverTarefa(props) {
         <Modal.Body>
           Deseja realmente remover a seguinte tarefa?
           <br />
-          <strong>{props.tarefa.nome}</strong>
+          <strong>{tarefa.nome}</strong>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary"
+          <Button
+            variant="primary"
             onClick={handleRemoverTarefa}
-            data-testid="btn-remover">
+            data-testid="btn-remover"
+          >
             Sim
           </Button>
           <Button variant="light" onClick={handleFecharModal}>
@@ -57,12 +72,6 @@ function RemoverTarefa(props) {
       </Modal>
     </span>
   );
-
-}
-
-RemoverTarefa.propTypes = {
-  tarefa: PropTypes.object.isRequired,
-  recarregarTarefas: PropTypes.func.isRequired
-}
+};
 
 export default RemoverTarefa;
