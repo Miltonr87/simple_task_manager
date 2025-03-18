@@ -6,8 +6,7 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import ItensListaTarefas from './itens-lista-tarefas';
 import Paginacao from './paginacao';
 import Ordenacao from './ordenacao';
-import axios from 'axios';
-
+import { getCombinedTarefas } from '../api';
 interface Tarefa {
   id: number;
   nome: string;
@@ -15,7 +14,7 @@ interface Tarefa {
 }
 
 const ListarTarefas: React.FC = () => {
-  const ITENS_POR_PAG = 3;
+  const ITENS_POR_PAG = 8;
 
   const [tarefas, setTarefas] = useState<Tarefa[]>([]);
   const [carregarTarefas, setCarregarTarefas] = useState<boolean>(true);
@@ -25,55 +24,41 @@ const ListarTarefas: React.FC = () => {
   const [filtroTarefa, setFiltroTarefa] = useState<string>('');
 
   useEffect(() => {
-    function obterTarefas() {
-      // Fetch tasks from the API
-      axios
-        .get('https://jsonplaceholder.typicode.com/todos?_limit=5')
-        .then((response) => {
-          let listaTarefas: Tarefa[] = response.data.map((tarefa: any) => ({
-            id: tarefa.id,
-            nome: tarefa.title,
-            concluida: tarefa.completed,
-          }));
-
-          // Retrieve tasks from localStorage
-          const tarefasLocais: Tarefa[] = JSON.parse(
-            localStorage.getItem('tarefas') || '[]'
+    const obterTarefas = async () => {
+      try {
+        // Fetch combined tasks (API + localStorage)
+        const tarefasCombinadas = await getCombinedTarefas(5);
+        let tarefasFiltradas = tarefasCombinadas.filter((t) => {
+          return (
+            t.nome &&
+            t.nome.toLowerCase().indexOf(filtroTarefa.toLowerCase()) === 0
           );
-
-          // Combine tasks from API and localStorage
-          const tarefasCombinadas = [...listaTarefas, ...tarefasLocais];
-
-          // Filter tasks based on the filter value
-          const tarefasFiltradas = tarefasCombinadas.filter(
-            (t) =>
-              t.nome.toLowerCase().indexOf(filtroTarefa.toLowerCase()) === 0
-          );
-
-          // Sorting based on current order
-          if (ordenar === 'asc') {
-            tarefasFiltradas.sort((t1, t2) =>
-              t1.nome.toLowerCase() > t2.nome.toLowerCase() ? 1 : -1
-            );
-          } else if (ordenar === 'desc') {
-            tarefasFiltradas.sort((t1, t2) =>
-              t1.nome.toLowerCase() < t2.nome.toLowerCase() ? 1 : -1
-            );
-          }
-
-          // Paginate tasks
-          setTotalItems(tarefasFiltradas.length);
-          setTarefas(
-            tarefasFiltradas.slice(
-              (paginaAtual - 1) * ITENS_POR_PAG,
-              paginaAtual * ITENS_POR_PAG
-            )
-          );
-        })
-        .catch((error) => {
-          console.error('Error fetching tasks:', error);
         });
-    }
+
+        // Sorting based on current order
+        if (ordenar === 'asc') {
+          tarefasFiltradas.sort((t1, t2) =>
+            t1.nome.toLowerCase() > t2.nome.toLowerCase() ? 1 : -1
+          );
+        } else if (ordenar === 'desc') {
+          tarefasFiltradas.sort((t1, t2) =>
+            t1.nome.toLowerCase() < t2.nome.toLowerCase() ? 1 : -1
+          );
+        }
+
+        // Paginate tasks
+        setTotalItems(tarefasFiltradas.length);
+        setTarefas(
+          tarefasFiltradas.slice(
+            (paginaAtual - 1) * ITENS_POR_PAG,
+            paginaAtual * ITENS_POR_PAG
+          )
+        );
+        console.log('Updated tarefas state:', tarefasFiltradas);
+      } catch (error) {
+        console.error('Error fetching combined tasks:', error);
+      }
+    };
 
     if (carregarTarefas) {
       obterTarefas();
