@@ -7,23 +7,18 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 interface OrdenacaoProps {
-  readonly ordenar: 'asc' | 'desc' | 'none';
+  readonly order: 'asc' | 'desc' | 'none';
 }
 
-function Ordenacao({ ordenar }: OrdenacaoProps) {
-  // Returns visibility for the sort icon (default state)
+function OrderTasks({ order }: OrdenacaoProps) {
   function handleSortIconVisibility() {
-    return ordenar === 'none' ? '' : 'hidden';
+    return order === 'none' ? '' : 'hidden';
   }
-
-  // Returns visibility for ascending icon
   function handleAsc() {
-    return ordenar === 'asc' ? '' : 'hidden';
+    return order === 'asc' ? '' : 'hidden';
   }
-
-  // Returns visibility for descending icon
   function handleDesc() {
-    return ordenar === 'desc' ? '' : 'hidden';
+    return order === 'desc' ? '' : 'hidden';
   }
 
   return (
@@ -47,4 +42,4 @@ function Ordenacao({ ordenar }: OrdenacaoProps) {
   );
 }
 
-export default Ordenacao;
+export default OrderTasks;

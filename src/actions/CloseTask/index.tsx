@@ -3,66 +3,66 @@ import { Modal, Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClipboardCheck } from '@fortawesome/free-solid-svg-icons';
 
-interface Tarefa {
+interface Task {
   id: number;
-  nome: string;
-  concluida: boolean;
+  name: string;
+  closed: boolean;
 }
 
 interface ConcluirTarefaProps {
-  tarefa: Tarefa;
-  recarregarTarefas: (recarregar: boolean) => void;
+  task: Task;
+  tasksReload: (reload: boolean) => void;
   className?: string;
 }
 
-const ConcluirTarefa: React.FC<ConcluirTarefaProps> = ({
-  tarefa,
-  recarregarTarefas,
+const CloseTask: React.FC<ConcluirTarefaProps> = ({
+  task,
+  tasksReload,
   className,
 }) => {
-  const [exibirModal, setExibirModal] = useState<boolean>(false);
+  const [displayModal, setDisplayModal] = useState<boolean>(false);
 
-  const handleAbrirModal = (event: React.MouseEvent) => {
+  const handleOpenModal = (event: React.MouseEvent) => {
     event.preventDefault();
-    setExibirModal(true);
+    setDisplayModal(true);
   };
 
-  const handleFecharModal = () => {
-    setExibirModal(false);
+  const handleCloseModal = () => {
+    setDisplayModal(false);
   };
 
   const handleConcluirTarefa = (event: React.MouseEvent) => {
     event.preventDefault();
-    const tarefasDb = localStorage['tarefas'];
-    let tarefas = tarefasDb ? JSON.parse(tarefasDb) : [];
-    tarefas = tarefas.map((tarefaDb: Tarefa) => {
-      if (tarefaDb.id === tarefa.id) {
-        tarefaDb.concluida = true;
+    const tasksDb = localStorage['tasks'];
+    let tasks = tasksDb ? JSON.parse(tasksDb) : [];
+    tasks = tasks.map((tarefaDb: Task) => {
+      if (tarefaDb.id === task.id) {
+        tarefaDb.closed = true;
       }
       return tarefaDb;
     });
-    localStorage['tarefas'] = JSON.stringify(tarefas);
-    setExibirModal(false);
-    recarregarTarefas(true);
+    localStorage['tasks'] = JSON.stringify(tasks);
+    setDisplayModal(false);
+    tasksReload(true);
   };
 
   return (
     <span className={className}>
       <Button
         className="btn-sm"
-        onClick={handleAbrirModal}
+        onClick={handleOpenModal}
         data-testid="btn-abrir-modal"
       >
         <FontAwesomeIcon icon={faClipboardCheck} />
       </Button>
-      <Modal show={exibirModal} onHide={handleFecharModal} data-testid="modal">
+      <Modal show={displayModal} onHide={handleCloseModal} data-testid="modal">
         <Modal.Header closeButton>
-          <Modal.Title>Concluir tarefa</Modal.Title>
+          <Modal.Title>Concluir task</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Deseja realmente concluir a seguinte tarefa?
+          Deseja realmente concluir a seguinte task?
           <br />
-          <strong>{tarefa.nome}</strong>
+          <strong>{task.name}</strong>
         </Modal.Body>
         <Modal.Footer>
           <Button
@@ -74,7 +74,7 @@ const ConcluirTarefa: React.FC<ConcluirTarefaProps> = ({
           </Button>
           <Button
             variant="light"
-            onClick={handleFecharModal}
+            onClick={handleCloseModal}
             data-testid="btn-fechar-modal"
           >
             Não
@@ -85,4 +85,4 @@ const ConcluirTarefa: React.FC<ConcluirTarefaProps> = ({
   );
 };
 
-export default ConcluirTarefa;
+export default CloseTask;
