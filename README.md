@@ -1,68 +1,76 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Simple Task Manager
 
-## Available Scripts
+### About
 
-In the project directory, you can run:
+This project is a simple task manager built with **TypeScript**, **ReactJS**, **Bootstrap**, and **Axios**. It uses the **Context API** for managing the data flow across components. It provides basic CRUD functionality for managing tasks (Create, Read, Update, Delete), allows you to mark tasks as completed, and includes a search bar to filter tasks.
 
-### `npm start`
+[X] Desktop version - Live: https://simple-task-manager-eta.vercel.app/
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Workflow
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+src/
+│
+├── actions/
+│ ├── CloseTask.js # Action to close a task
+│ ├── DeleteTask.js # Action to delete a task
+│ ├── OrderTasks.js # Action to order tasks
+│ ├── PaginateTasks.js # Action to paginate tasks
+│
+├── pages/
+│ ├── TaskCreation.js # Page for creating tasks
+│ ├── TaskList.js # Page for displaying tasks in a list
+│ ├── TaskUpdate.js # Page for updating tasks
+│
+├── services/
+│ ├── TaskService.js # Service to fetch the API, save, and manage tasks on LocalStorage
+│
+├── types/
+│ ├── Task.js # Type definition
 
-### `npm test`
+### CRUD Operations and Additional Features
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This application supports basic CRUD operations on tasks:
 
-### `npm run build`
+1. **Create Task**:
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Users can create a new task through the `TaskCreation` page. This adds a task to the task list and saves it to LocalStorage.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+2. **Read Tasks**:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Tasks are fetched from `https://jsonplaceholder.typicode.com/todos` and displayed in the `TaskList` page. Tasks are also retrieved from LocalStorage and displayed after the user creates them.
 
-### `npm run eject`
+3. **Update Task**:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Tasks can be edited via the `TaskUpdate` page. This allows the user to modify a task's properties, such as its title or completion status.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+4. **Delete Task**:
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Tasks can be deleted from the list using the `DeleteTask` action, which removes the task from both the UI and LocalStorage.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+5. **Search Bar**:
 
-## Learn More
+- The `TaskList` page includes a search bar that allows users to filter tasks by their title. This provides a quick way to find tasks in a long list.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+6. **Mark Task**:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Each task in the list has a button to mark it as completed. Clicking the button will toggle the task's `completed` status and update the UI accordingly.
 
-### Code Splitting
+7. **Pagination**:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+- Pagination added along with a simple sorting system that sorts from the first task to the last and vice versa.
 
-### Analyzing the Bundle Size
+### Getting Started
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+- Clone the repo (HTTP Protocol): `git clone https://github.com/Miltonr87/simple_task_manager.git`
+- Use NPM or Yarn to install the React app and run the project on your computer.
 
-### Making a Progressive Web App
+### Required
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+As you see, **Simple Task Manager** runs on [Node.js](https://nodejs.org/), so before you can continue, please ensure that you have it installed with NPM or Yarn. Once you have Node installed, you will need the React (18) library. So, to start the project in your machine, open your terminal inside the Simple Task Manager folder and type "NPM Install" or "Yarn Install".
 
-### Advanced Configuration
+### Clone the repository
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```bash
+git clone https://github.com/your-repo/simple-task-manager.git
+cd simple-task-manager
+```
