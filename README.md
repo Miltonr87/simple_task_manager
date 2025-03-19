@@ -8,7 +8,7 @@ This project is a simple task manager built with **TypeScript**, **ReactJS**, **
 
 ### Codebase
 
-````
+```
 src/
 │
 ├── actions/
@@ -27,6 +27,7 @@ src/
 │
 ├── types/
 │ ├── Task.js # Type definition
+
 ```
 
 ### CRUD Operations and Additional Features
@@ -75,4 +76,4 @@ As you see, **Simple Task Manager** runs on [Node.js](https://nodejs.org/), so b
 ```bash
 git clone https://github.com/your-repo/simple-task-manager.git
 cd simple-task-manager
-````
+```
