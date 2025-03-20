@@ -57,7 +57,7 @@ const CloseTask: React.FC<ConcluirTarefaProps> = ({
       </Button>
       <Modal show={displayModal} onHide={handleCloseModal} data-testid="modal">
         <Modal.Header closeButton>
-          <Modal.Title>Concluir task</Modal.Title>
+          <Modal.Title>Close Task</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Do you really want to complete the following task?
