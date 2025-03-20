@@ -60,7 +60,7 @@ const CloseTask: React.FC<ConcluirTarefaProps> = ({
           <Modal.Title>Concluir task</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Deseja realmente concluir a seguinte task?
+          Do you really want to complete the following task?
           <br />
           <strong>{task.name}</strong>
         </Modal.Body>
@@ -70,14 +70,14 @@ const CloseTask: React.FC<ConcluirTarefaProps> = ({
             onClick={handleConcluirTarefa}
             data-testid="btn-concluir"
           >
-            Sim
+            Yes
           </Button>
           <Button
             variant="light"
             onClick={handleCloseModal}
             data-testid="btn-fechar-modal"
           >
-            Não
+            No
           </Button>
         </Modal.Footer>
       </Modal>
